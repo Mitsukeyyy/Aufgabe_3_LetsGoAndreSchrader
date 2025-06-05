@@ -9,6 +9,8 @@ public class UI_Manager : MonoBehaviour
     public TextMeshProUGUI counter;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI CountdownText;
+    public TextMeshProUGUI scoreDisplay;
+    public int score;
     
     [SerializeField] GameManager gamemanager;
     
@@ -48,7 +50,9 @@ public class UI_Manager : MonoBehaviour
     public void ShowLostPanel()
     {
         lostPanel.SetActive(true);
+        PointSystem();
         gamemanager.StopAllCoroutines();
+        
     }
 
     public void ShowWinPanel()
@@ -71,8 +75,7 @@ public class UI_Manager : MonoBehaviour
 
     public void UpdateTimer(int TimerInt)
     {
-        timerText.text = TimerInt.ToString();
-        //TODO: if the player game stops the timer stops 
+        timerText.text = (TimerInt.ToString() + "s");
     }
     
     public void StartMenu()
@@ -82,12 +85,18 @@ public class UI_Manager : MonoBehaviour
 
     IEnumerator LoadLevel()
     {
-        for (int i = 3; i > 0; i--)
+        for (float i = 3; i > 0; i--)
         {
             CountdownText.text = i.ToString();
             yield return new WaitForSeconds(1);
         }
         CountdownText.gameObject.SetActive(false);
+    }
+
+    private void PointSystem()
+    {
+        score = gamemanager.timerInt / gamemanager.counterInt;
+        scoreDisplay.text = score.ToString();
     }
 
 }
