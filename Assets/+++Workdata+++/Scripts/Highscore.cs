@@ -3,34 +3,64 @@ using UnityEngine;
 
 public class Highscore : MonoBehaviour
 {
-    [SerializeField] private int highscore = 0;
-    public TextMeshProUGUI highscoreText;
+    [SerializeField] private int[] highscore =  new int[5];
+    //[SerializeField] private int highscore2 = 9999;
+    [SerializeField] TextMeshProUGUI[] highscoreText;
+    //public TextMeshProUGUI HighscoreText2;
 
     [SerializeField] UI_Manager uimanager; 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        highscore = PlayerPrefs.GetInt("Highscore", highscore);
-        highscoreText.text = highscore.ToString();
-     
+        for (int i = 0; i < highscore.Length; i++)
+        {
+            highscore[i] = PlayerPrefs.GetInt("Highscore" + i, 9999);
+        }
         
+        UpdateList();
     }
 
     // Update is called once per frame
     void Update()
     {
-        HighscoreSystem();
+        if (Input.GetKeyDown(KeyCode.R)) // Press 'R' to reset
+        {
+            PlayerPrefs.DeleteAll();
+            PlayerPrefs.Save();
+            Debug.Log("PlayerPrefs cleared.");
+        }
+
+        UpdateHighscore(uimanager.score);
+        
     }
 
-    private void HighscoreSystem()
+    private void UpdateHighscore(int newScore)
     {
-        if (highscore < uimanager.score)
-        {
-            highscore = uimanager.score;
-            PlayerPrefs.SetInt("Highscore", highscore);
+            if (newScore >= highscore[highscore.Length - 1])
+                return;
+            
+            for (int i = 0; i < highscore.Length; i++)
+            {
+                if (highscore[i] == newScore)
+                    return;
+            }
+            highscore[highscore.Length - 1] = newScore;
+            System.Array.Sort(highscore);
+            
+            for (int i = 0; i < highscoreText.Length; i++)
+            {
+                PlayerPrefs.SetInt("Highscore" + i, highscore[i]);
+            }
             PlayerPrefs.Save();
-            highscoreText.text = highscore.ToString();
-       
+            UpdateList();
+             
+    }
+    private void UpdateList()
+    {
+        for (int i = 0; i < highscore.Length && i < highscoreText.Length; i++)
+        {
+                highscoreText[i].text = highscore[i].ToString();
         }
     }
+  
 }

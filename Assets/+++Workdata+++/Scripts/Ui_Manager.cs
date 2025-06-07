@@ -95,7 +95,7 @@ public class UI_Manager : MonoBehaviour
 
     private void PointSystem()
     {
-        score = gamemanager.timerInt / gamemanager.counterInt;
+        score = gamemanager.timerInt - gamemanager.counterInt;
         scoreDisplay.text = score.ToString();
     }
 
