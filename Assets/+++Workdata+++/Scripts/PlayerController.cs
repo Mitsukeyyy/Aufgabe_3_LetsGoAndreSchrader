@@ -76,6 +76,14 @@ public class PlayerController : MonoBehaviour
             canMove = false; //if the player collides with an obstacle the game counts as lost. 
             uimanager.ShowLostPanel();
             
+        }else if (other.CompareTag("diamond"))
+        {
+            Destroy(other.gameObject);
+            gameManager.IncreaseDiamondCounter();
+        }else if (other.CompareTag("WinZone"))
+        {
+            uimanager.ShowWinPanel();
+            canMove = false;
         }
     }
     IEnumerator Countdown() //creates a Coroutine for a Countdown before the game starts 

@@ -7,9 +7,11 @@ using UnityEngine.UI;
 public class UI_Manager : MonoBehaviour
 {
     public TextMeshProUGUI counter;
+    public TextMeshProUGUI diamondText;
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI CountdownText;
     public TextMeshProUGUI scoreDisplay;
+ 
     public int score;
     
     [SerializeField] GameManager gamemanager;
@@ -30,6 +32,7 @@ public class UI_Manager : MonoBehaviour
       lostPanel.SetActive(false);
       winPanel.SetActive(false);
       timerText.text = "0";
+      diamondText.text = "0";
 
       buttonReloadLevel.onClick.AddListener(LevelRestart);
       buttonMainMenu1.onClick.AddListener(StartMenu);
@@ -50,14 +53,12 @@ public class UI_Manager : MonoBehaviour
     public void ShowLostPanel()
     {
         lostPanel.SetActive(true);
-        PointSystem();
-        gamemanager.StopAllCoroutines();
-        
     }
 
     public void ShowWinPanel()
     {
         winPanel.SetActive(true);
+        PointSystem();
     }
 
     public void LevelRestart()
@@ -77,7 +78,11 @@ public class UI_Manager : MonoBehaviour
     {
         timerText.text = (TimerInt.ToString() + "s");
     }
-    
+
+    public void UpdateDiamond(int Diamond)
+    {
+        diamondText.text = Diamond.ToString();
+    }
     public void StartMenu()
     {
         SceneManager.LoadScene(0);
@@ -95,7 +100,7 @@ public class UI_Manager : MonoBehaviour
 
     private void PointSystem()
     {
-        score = gamemanager.timerInt - gamemanager.counterInt;
+        score = (gamemanager.timerInt - gamemanager.counterInt) / gamemanager.DiamondInt;
         scoreDisplay.text = score.ToString();
     }
 

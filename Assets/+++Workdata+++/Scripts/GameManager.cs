@@ -4,6 +4,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] public int counterInt = 0;
+    [SerializeField] public int DiamondInt = 1;
     [SerializeField] public int timerInt = 0;
     [SerializeField] private UI_Manager uiManager;
     [SerializeField] private PlayerController player;
@@ -19,6 +20,12 @@ public class GameManager : MonoBehaviour
     {
         counterInt++;
         uiManager.UpdateCounter(counterInt);
+    }
+    
+    public void IncreaseDiamondCounter()
+    {
+        DiamondInt++;
+        uiManager.UpdateDiamond(DiamondInt);
     }
 
     IEnumerator TimeCount()

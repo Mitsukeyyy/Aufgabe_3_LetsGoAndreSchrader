@@ -7,6 +7,8 @@ TagManager:
   - Ground
   - coin
   - obstacle
+  - diamond
+  - WinZone
   layers:
   - Default
   - TransparentFX
