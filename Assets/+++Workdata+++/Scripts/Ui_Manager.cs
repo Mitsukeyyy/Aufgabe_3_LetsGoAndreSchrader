@@ -21,6 +21,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] private GameObject winPanel;
     
     [SerializeField] private Button buttonReloadLevel;
+    [SerializeField] private Button buttonReloadLevel2;
     [SerializeField] private Button buttonMainMenu1;
     [SerializeField] private Button buttonMainMenu2;
     
@@ -35,6 +36,7 @@ public class UI_Manager : MonoBehaviour
       diamondText.text = "0";
 
       buttonReloadLevel.onClick.AddListener(LevelRestart);
+      buttonReloadLevel2.onClick.AddListener(LevelRestart);
       buttonMainMenu1.onClick.AddListener(StartMenu);
       buttonMainMenu2.onClick.AddListener(StartMenu);
       StartCoroutine(LoadLevel());
@@ -81,7 +83,7 @@ public class UI_Manager : MonoBehaviour
 
     public void UpdateDiamond(int Diamond)
     {
-        diamondText.text = Diamond.ToString();
+        diamondText.text = (Diamond - 1).ToString();
     }
     public void StartMenu()
     {
@@ -94,13 +96,14 @@ public class UI_Manager : MonoBehaviour
         {
             CountdownText.text = i.ToString();
             yield return new WaitForSeconds(1);
+            
         }
         CountdownText.gameObject.SetActive(false);
     }
 
     private void PointSystem()
     {
-        score = (gamemanager.timerInt - gamemanager.counterInt) / gamemanager.DiamondInt;
+        score =  gamemanager.timerInt / gamemanager.DiamondInt - gamemanager.counterInt; 
         scoreDisplay.text = score.ToString();
     }
 

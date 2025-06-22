@@ -23,12 +23,17 @@ public class PlayerController : MonoBehaviour
 
     public bool canMove = true; //used to disable movement after a death or win 
     
+    public AudioClip jumpSound;
+    public AudioClip collectableSound;
+    private AudioSource audioSource;
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         StartCoroutine(Countdown());
         rb = GetComponent<Rigidbody2D>(); // taking the RigidBody2D values on the gameObject 
         layerGround = LayerMask.GetMask("Ground"); //declaring the layerMask to be the Ground layer 
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -49,7 +54,7 @@ public class PlayerController : MonoBehaviour
             }
             // declared a and d for the movement, -1 meaning going backwards while 1 means forward 
 
-            if (Keyboard.current.spaceKey.isPressed)
+            if (Keyboard.current.spaceKey.wasPressedThisFrame)
             {
                 Jump();
             }
@@ -61,6 +66,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics2D.OverlapCircle(transformGroundCheck.position, 0.1f, layerGround)) 
             rb.linearVelocity = new Vector2(0, jumpHeight); 
+        audioSource.PlayOneShot(jumpSound);
     }
     // if the GroundCheck GameObject is within a radius to the layerGround y gets set to jumpHeight     
     private void OnTriggerEnter2D(Collider2D other) //used for any collidable object 
@@ -68,7 +74,9 @@ public class PlayerController : MonoBehaviour
         if (other.CompareTag("coin")) 
         {
             Destroy(other.gameObject); //if the collectable was a coin, it gets destroyed and the counter adds up 
-             gameManager.IncreaseCounter(); // increases Coincounter and displays it on a Textfield
+            audioSource.PlayOneShot(collectableSound); 
+            gameManager.IncreaseCounter(); // increases Coincounter and displays it on a Textfield
+            
             
         }else if (other.CompareTag("obstacle")) 
         {
@@ -79,11 +87,12 @@ public class PlayerController : MonoBehaviour
         }else if (other.CompareTag("diamond"))
         {
             Destroy(other.gameObject);
+            audioSource.PlayOneShot(collectableSound); 
             gameManager.IncreaseDiamondCounter();
         }else if (other.CompareTag("WinZone"))
         {
-            uimanager.ShowWinPanel();
-            canMove = false;
+            uimanager.ShowWinPanel(); //shows the winning screen when the player reached the finish line 
+            canMove = false; 
         }
     }
     IEnumerator Countdown() //creates a Coroutine for a Countdown before the game starts 
