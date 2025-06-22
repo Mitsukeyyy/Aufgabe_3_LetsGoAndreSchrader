@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Highscore : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class Highscore : MonoBehaviour
     [SerializeField] TextMeshProUGUI[] highscoreText;
 
     [SerializeField] UI_Manager uimanager;
+    
+    [SerializeField] private string levelId = ""; 
     private bool updated = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -14,7 +17,7 @@ public class Highscore : MonoBehaviour
     {
         for (int i = 0; i < highscore.Length; i++)
         {
-            highscore[i] = PlayerPrefs.GetInt("Highscore" + i, 9999);
+            highscore[i] = PlayerPrefs.GetInt(GetKey(i), 9999);
         }
         updated = false;
         UpdateList();
@@ -44,7 +47,7 @@ public class Highscore : MonoBehaviour
 
         for (int i = 0; i < highscore.Length; i++)
         {
-            PlayerPrefs.SetInt("Highscore" + i, highscore[i]);
+            PlayerPrefs.SetInt(GetKey(i), highscore[i]);
         }
         PlayerPrefs.Save();
         UpdateList();
@@ -63,6 +66,10 @@ public class Highscore : MonoBehaviour
                 highscoreText[i].text = (i + 1) + ": " + highscore[i].ToString();
             }
         }
+    }
+    private string GetKey(int index)
+    {
+        return $"Highscore_{levelId}_{index}";
     }
   
 }

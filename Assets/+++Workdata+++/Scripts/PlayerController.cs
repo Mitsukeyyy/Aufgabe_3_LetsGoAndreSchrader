@@ -46,11 +46,13 @@ public class PlayerController : MonoBehaviour
             if (Keyboard.current.aKey.isPressed)
             {
                 direction = -1;
+                gameObject.transform.eulerAngles = new Vector3(0f, 180f, 0f);
             }
 
             if (Keyboard.current.dKey.isPressed)
             {
                 direction = 1; 
+                gameObject.transform.eulerAngles = new Vector3(0f, 0f, 0f);
             }
             // declared a and d for the movement, -1 meaning going backwards while 1 means forward 
 
