@@ -23,9 +23,9 @@ public class PlayerController : MonoBehaviour
 
     public bool canMove = true; //used to disable movement after a death or win 
     
-    public AudioClip jumpSound;
+    public AudioClip jumpSound; //audioclip for certain events
     public AudioClip collectableSound;
-    private AudioSource audioSource;
+    private AudioSource audioSource; //using AudioSource on GameObject
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -68,7 +68,7 @@ public class PlayerController : MonoBehaviour
     {
         if (Physics2D.OverlapCircle(transformGroundCheck.position, 0.1f, layerGround)) 
             rb.linearVelocity = new Vector2(0, jumpHeight); 
-        audioSource.PlayOneShot(jumpSound);
+        audioSource.PlayOneShot(jumpSound); //plays JumpSound when using function
     }
     // if the GroundCheck GameObject is within a radius to the layerGround y gets set to jumpHeight     
     private void OnTriggerEnter2D(Collider2D other) //used for any collidable object 
@@ -89,7 +89,7 @@ public class PlayerController : MonoBehaviour
         }else if (other.CompareTag("diamond"))
         {
             Destroy(other.gameObject);
-            audioSource.PlayOneShot(collectableSound); 
+            audioSource.PlayOneShot(collectableSound); //plays collectable sound when colliding with diamond/coin
             gameManager.IncreaseDiamondCounter();
         }else if (other.CompareTag("WinZone"))
         {
